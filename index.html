@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Promedio</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
+        input { width: 50px; margin: 5px; }
+        button { margin-top: 10px; padding: 8px 15px; }
+        #resultado { margin-top: 15px; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Promedio</h1>
+    <p>Ingrese las 5 notas del primer parcial (0-10):</p>
+    
+    <div>
+        Nota 1: <input type="number" id="nota1" min="0" max="10" step="0.1">
+        Nota 2: <input type="number" id="nota2" min="0" max="10" step="0.1"><br>
+        Nota 3: <input type="number" id="nota3" min="0" max="10" step="0.1">
+        Nota 4: <input type="number" id="nota4" min="0" max="10" step="0.1"><br>
+        Nota 5: <input type="number" id="nota5" min="0" max="10" step="0.1">
+    </div>
+    
+    <button onclick="calcularPromedio()">Calcular Promedio</button>
+    
+    <div id="resultado"></div>
+    
+    <script>
+        function calcularPromedio() {
+            // Obtener las notas de los inputs
+            const notas = [
+                parseFloat(document.getElementById("nota1").value),
+                parseFloat(document.getElementById("nota2").value),
+                parseFloat(document.getElementById("nota3").value),
+                parseFloat(document.getElementById("nota4").value),
+                parseFloat(document.getElementById("nota5").value)
+            ];
+            
+            // Verificar que todas las notas sean válidas
+            let notasValidas = true;
+            for (let nota of notas) {
+                if (isNaN(nota) || nota < 0 || nota > 10) {
+                    notasValidas = false;
+                    break;
+                }
+            }
+            
+            const resultadoDiv = document.getElementById("resultado");
+            
+            if (!notasValidas) {
+                resultadoDiv.innerHTML = "Error: Todas las notas deben ser números entre 0 y 10";
+                resultadoDiv.style.color = "red";
+                return;
+            }
+            
+            // Calcular promedio
+            const suma = notas.reduce((total, nota) => total + nota, 0);
+            const promedio = suma / 5;
+            
+            // Determinar resultado
+            let mensaje = `<strong>Notas ingresadas:</strong> ${notas.join(', ')}<br>`;
+            mensaje += `<strong>Promedio:</strong> ${promedio.toFixed(2)}<br>`;
+            
+            if (promedio >= 7) {
+                mensaje += "<strong>Resultado:</strong> Pasa de año";
+                resultadoDiv.style.color = "green";
+            } else if (promedio >= 3.5) {
+                mensaje += "<strong>Resultado:</strong> Suspenso";
+                resultadoDiv.style.color = "orange";
+            } else {
+                mensaje += "<strong>Resultado:</strong> Pierde el semestre";
+                resultadoDiv.style.color = "red";
+            }
+            
+            resultadoDiv.innerHTML = mensaje;
+        }
+    </script>
+</body>
+</html>
